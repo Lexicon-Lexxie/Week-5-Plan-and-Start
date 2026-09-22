@@ -1,1 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <title>Week 5 | CS110 Newcomer's Guide</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <main>
+
+    <a href="../index.html">← Return to my website</a>
+
+    <header>
+      <p class="week-label">CS110 • WEEK 05</p>
+
+      <h1>My CS110 Newcomer's Guide</h1>
+
+      <p class="intro">
+        This guide explains what I have learned so far and how an idea
+        can turn into something people can actually use.
+      </p>
+    </header>
+
+    <section class="hero">
+      <h2>From an idea to something people can use</h2>
+
+      <p>
+        Computer science is not only about writing code. It is also about
+        asking questions, being creative, understanding people, and using
+        tools to turn ideas into working experiences.
+      </p>
+
+      <button id="start-button" type="button">
+        Start the Guide
+      </button>
+    </section>
+
+    <section class="stops">
+
+      <article class="stop">
+        <span class="number">01</span>
+
+        <h2>Mindset</h2>
+
+        <h3>How we learn</h3>
+
+        <p>
+          I learned that questions, creativity, personality, and support
+          all affect how I learn. One important part of learning computer
+          science is being willing to try something, make mistakes, and
+          change my approach when something does not work.
+        </p>
+
+        <div class="question">
+          <strong>Newcomer question:</strong>
+          What can I change if my first approach does not work?
+        </div>
+      </article>
+
+
+      <article class="stop">
+        <span class="number">02</span>
+
+        <h2>Story to Screen</h2>
+
+        <h3>How an idea becomes a UI</h3>
+
+        <p>
+          Before creating a website or application, I need to think about
+          the audience, the user's need, and the type of experience I want
+          to create.
+        </p>
+
+        <div class="hats">
+          <div>
+            <strong>Visual</strong>
+            <p>How should it look?</p>
+          </div>
+
+          <div>
+            <strong>Logical</strong>
+            <p>How should it work?</p>
+          </div>
+
+          <div>
+            <strong>Data</strong>
+            <p>What information does it need?</p>
+          </div>
+        </div>
+      </article>
+
+
+      <article class="stop">
+        <span class="number">03</span>
+
+        <h2>Tools + Code</h2>
+
+        <h3>How the app works</h3>
+
+        <p>
+          HTML creates the structure, CSS controls the appearance, and
+          JavaScript adds behavior. VS Code is where I can work on the
+          project, while Git and GitHub help me save and share changes.
+        </p>
+
+        <div class="tools">
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>JavaScript</span>
+          <span>VS Code</span>
+          <span>Git</span>
+          <span>GitHub</span>
+          <span>3D</span>
+        </div>
+      </article>
+
+
+      <article class="stop">
+        <span class="number">04</span>
+
+        <h2>Network + People</h2>
+
+        <h3>How it reaches others</h3>
+
+        <p>
+          A website has to travel through a network before someone can
+          use it. A browser connects through a name server to find the
+          site server. GitHub and Discord can also help people work
+          together.
+        </p>
+
+        <div class="route">
+          <span>Browser</span>
+          <span>→</span>
+          <span>Name Server</span>
+          <span>→</span>
+          <span>Site Server</span>
+        </div>
+      </article>
+
+    </section>
+
+
+    <section class="reflection">
+
+      <h2>My Week 5 Reflection</h2>
+
+      <p>
+        One thing I have learned is that computer science involves more
+        than just coding. I have to think about the person using what I
+        create, how the idea should look and work, and how other people
+        can access it. I also learned that asking questions and changing
+        my approach can help me learn better.
+      </p>
+
+      <button id="question-button" type="button">
+        Show My Peer Question
+      </button>
+
+      <p id="peer-question" hidden>
+        What part of my guide was easiest to understand, and what part
+        should I explain better?
+      </p>
+
+    </section>
+
+
+    <footer>
+      <p>CS110 • Week 5 • Reflection + Build</p>
+    </footer>
+
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
