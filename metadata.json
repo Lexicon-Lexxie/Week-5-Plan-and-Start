@@ -1,0 +1,8 @@
+{
+  "name": "Week 5 | CS110 Newcomer's Guide",
+  "description": "CS110 Week 5 reflection and newcomer's guide from idea to interactive experience.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

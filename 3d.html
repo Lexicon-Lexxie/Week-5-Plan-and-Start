@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive 3D WebGL Viewport • The Technology Field Guide</title>
+  <meta name="description" content="An interactive 3D WebGL laboratory exploring browser graphics rendering, shaders, vector math, and real-time JavaScript controls.">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .viewport-container {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      background: radial-gradient(circle at center, #111a28 0%, #06090e 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+    #three-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .hud-overlay {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(10, 15, 24, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 8px;
+      padding: 16px;
+      width: 260px;
+      z-index: 10;
+      color: #e2e8f0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .hud-overlay h4 {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      color: var(--accent-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hud-overlay h4::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .control-row {
+      margin-bottom: 12px;
+    }
+    .control-row label {
+      display: block;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .control-row select, .control-row input[type="range"] {
+      width: 100%;
+      background: #080d14;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+    }
+    .control-row select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      cursor: pointer;
+    }
+    .toggle-group input[type="checkbox"] {
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .telemetry-badge {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(8, 12, 18, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #94a3b8;
+      z-index: 10;
+      line-height: 1.5;
+    }
+    .telemetry-badge span {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .role-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-top: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .role-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent-light);
+      margin-bottom: 6px;
+    }
+    .role-card h3 {
+      margin: 0 0 8px;
+      color: #fff;
+      font-size: 1.15rem;
+    }
+    .role-card p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.55;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <div class="top-status-bar">
+    <div class="status-inner">
+      <a href="/" class="status-pill">
+        <svg class="mantis-logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Awayzo Black Mantis Logo">
+          <defs>
+            <linearGradient id="mantisGrad3d" x1="6" y1="2" x2="42" y2="46" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#38bdf8" />
+              <stop offset="0.5" stop-color="#0284c7" />
+              <stop offset="1" stop-color="#090d16" />
+            </linearGradient>
+            <filter id="eyeGlow3d" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <path d="M22 9 C17 3, 11 2, 7 4 C11 6, 17 9, 20 12" fill="#38bdf8" opacity="0.95" />
+          <path d="M26 9 C31 3, 37 2, 41 4 C37 6, 31 9, 28 12" fill="#38bdf8" opacity="0.95" />
+          <path d="M24 5 L37 34 L32 44 L27 34 L21 34 L16 44 L11 34 Z" fill="url(#mantisGrad3d)" stroke="#38bdf8" stroke-width="1.6" stroke-linejoin="round" />
+          <polygon points="24,14 19,26 29,26" fill="#06090e" stroke="#38bdf8" stroke-width="1.2" />
+          <path d="M15 29 L33 29" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+          <polygon points="11,17 18,22 14,27 8,22" fill="#38bdf8" filter="url(#eyeGlow3d)" />
+          <polygon points="37,17 30,22 34,27 40,22" fill="#38bdf8" filter="url(#eyeGlow3d)" />
+          <path d="M16 44 L20 38" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+          <path d="M32 44 L28 38" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span class="brand-title">AWAYZO <span class="brand-divider">||</span> BLACK MANTIS</span>
+      </a>
+      <div class="status-links">
+        <a href="/">← Return to Field Guide</a>
+        <a href="/package-shelf">The Package Shelf ↗</a>
+        <a href="/team">Team Awayzo ★</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <header class="fieldguide-header">
+      <div class="guide-badge">AWAYZO || BLACK MANTIS · SPATIAL GRAPHICS CHAPTER</div>
+      <h1>Interactive 3D Viewport</h1>
+      <p class="intro">
+        How modern web browsers render real-time 3D graphics. Using WebGL and the open-source Three.js engine, this laboratory demonstrates how vector geometry, lighting shaders, and JavaScript event listeners interact directly on your screen.
+      </p>
+    </header>
+
+    <!-- 3D Canvas Viewport -->
+    <section class="hero-guide" style="padding: 16px; margin-bottom: 32px;">
+      <div class="viewport-container" id="container3d">
+        <canvas id="three-canvas"></canvas>
+
+        <!-- Interactive HUD Controls -->
+        <div class="hud-overlay">
+          <h4>Viewport Controls</h4>
+          <div class="control-row">
+            <label for="themeSelect">Color Spectrum:</label>
+            <select id="themeSelect">
+              <option value="blackmantis" selected>Black Mantis (Obsidian &amp; Neon)</option>
+              <option value="fieldguide">Cyan Precision</option>
+              <option value="solar">Solar Amber</option>
+              <option value="emerald">Emerald Relay</option>
+              <option value="violet">Deep Violet</option>
+            </select>
+          </div>
+          <div class="control-row">
+            <label for="geometrySelect">Geometry Mesh:</label>
+            <select id="geometrySelect">
+              <option value="geosphere">Geodesic Sphere</option>
+              <option value="torus">Torus Knot Relay</option>
+              <option value="icosa">Icosahedron Lattice</option>
+              <option value="cube">Hyper-Cube Matrix</option>
+            </select>
+          </div>
+          <div class="control-row">
+            <label class="toggle-group">
+              <input type="checkbox" id="wireframeToggle">
+              Wireframe Topology Mode
+            </label>
+          </div>
+          <div class="control-row">
+            <label for="speedSlider">Rotation Velocity:</label>
+            <input type="range" id="speedSlider" min="0" max="5" value="2" step="0.5">
+          </div>
+          <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
+            💡 Click &amp; drag to orbit camera. Scroll to zoom.
+          </div>
+        </div>
+
+        <!-- Telemetry HUD -->
+        <div class="telemetry-badge">
+          <div>ENGINE: <span>WebGL 2.0 via Three.js</span></div>
+          <div>STATUS: <span style="color: #10b981;">60 FPS Active Render</span></div>
+          <div>CAMERA: <span id="cameraCoords">X: 0.00, Y: 2.00, Z: 7.00</span></div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 8px;">
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Real-time hardware-accelerated GPU pipeline</span>
+        <button id="resetViewBtn" type="button" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;">Reset Camera Position</button>
+      </div>
+    </section>
+
+    <!-- Architectural Explanation of 3D Web Graphics -->
+    <section class="stops">
+      <article class="stop">
+        <div class="stop-header">
+          <span class="number">CORE ARCHITECTURE</span>
+          <span class="stop-category">The 3D Pipeline</span>
+        </div>
+        <h2>How HTML, CSS, JavaScript, and WebGL Cooperate</h2>
+        <p>
+          Rendering a 3D scene in a web browser relies on four distinct architectural layers working in tight harmony:
+        </p>
+
+        <div class="role-grid">
+          <div class="role-card">
+            <span class="role-badge">Structure</span>
+            <h3>HTML Canvas</h3>
+            <p>
+              Provides the semantic <code>&lt;canvas&gt;</code> element in the DOM tree, giving the browser a dedicated pixel buffer for GPU drawing operations.
+            </p>
+          </div>
+
+          <div class="role-card">
+            <span class="role-badge">Styling</span>
+            <h3>CSS &amp; HUD Layer</h3>
+            <p>
+              Positions glassmorphic control overlays on top of the canvas, manages responsive aspect ratios, and styles the surrounding typography.
+            </p>
+          </div>
+
+          <div class="role-card">
+            <span class="role-badge">Logic</span>
+            <h3>JavaScript Engine</h3>
+            <p>
+              Runs the 60fps render loop with <code>requestAnimationFrame</code>, tracks mouse coordinates for camera rotation, and updates state upon slider changes.
+            </p>
+          </div>
+
+          <div class="role-card">
+            <span class="role-badge">Graphics</span>
+            <h3>WebGL &amp; Shaders</h3>
+            <p>
+              Translates 3D vector coordinates, polygons, and light reflection algorithms directly into machine instructions executed on your computer's graphics card (GPU).
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="stop">
+        <div class="stop-header">
+          <span class="number">DEEP DIVE</span>
+          <span class="stop-category">Interactive Mathematics</span>
+        </div>
+        <h2>From 3D Math to 2D Pixels</h2>
+        <p>
+          Every 3D object on the web is composed of three fundamental mathematical concepts:
+        </p>
+        <div class="concept-breakdown">
+          <div class="concept-card">
+            <span class="concept-tag">Geometry</span>
+            <strong>Vertices &amp; Faces</strong>
+            <p>Collections of 3D points in space (X, Y, Z) connected to form triangles (polygonal meshes).</p>
+          </div>
+          <div class="concept-card">
+            <span class="concept-tag">Material</span>
+            <strong>Shaders &amp; Reflectance</strong>
+            <p>Mathematical equations that determine how incoming photons of light bounce off the surface.</p>
+          </div>
+          <div class="concept-card">
+            <span class="concept-tag">Camera</span>
+            <strong>Perspective Projection</strong>
+            <p>Transforming 3D coordinates into a 2D plane so objects further away appear naturally smaller.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="fieldguide-footer">
+      <div class="footer-top">
+        <strong>Awayzo || Black Mantis • The Technology Field Guide</strong>
+        <p>A practical reference for newcomers learning modern web engineering.</p>
+      </div>
+      <div class="footer-bottom">
+        <span>Crafted by Awayzo || Black Mantis • 3D Graphics &amp; WebGL Laboratory</span>
+        <a href="/" style="color: var(--accent); text-decoration: none;">← Back to Main Field Guide</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // 3D Scene Initialization with Three.js
+    const container = document.getElementById('container3d');
+    const canvas = document.getElementById('three-canvas');
+    const cameraCoordsEl = document.getElementById('cameraCoords');
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0a0e14, 0.04);
+
+    const camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(0, 2, 7);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xdbeafe, 0.9);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0x38bdf8, 2.2);
+    dirLight.position.set(5, 8, 5);
+    scene.add(dirLight);
+
+    const pointLight = new THREE.PointLight(0x0284c7, 2, 20);
+    pointLight.position.set(-4, -2, -3);
+    scene.add(pointLight);
+
+    // Star particle field
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 350;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount * 3; i += 3) {
+      starPos[i] = (Math.random() - 0.5) * 50;
+      starPos[i + 1] = (Math.random() - 0.5) * 50;
+      starPos[i + 2] = (Math.random() - 0.5) * 50;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.1, transparent: true, opacity: 0.6 });
+    const starField = new THREE.Points(starGeo, starMat);
+    scene.add(starField);
+
+    // Color palettes
+    const themes = {
+      blackmantis: { primary: 0x38bdf8, emissive: 0x0369a1, accent: 0x10b981, fog: 0x05080e },
+      fieldguide: { primary: 0x38bdf8, emissive: 0x075985, accent: 0x0284c7, fog: 0x0a0e14 },
+      solar: { primary: 0xf59e0b, emissive: 0x78350f, accent: 0xd97706, fog: 0x140e06 },
+      emerald: { primary: 0x10b981, emissive: 0x064e3b, accent: 0x059669, fog: 0x06140e },
+      violet: { primary: 0xa855f7, emissive: 0x581c87, accent: 0x7c3aed, fog: 0x11081a }
+    };
+
+    let mainGroup = new THREE.Group();
+    scene.add(mainGroup);
+
+    let meshObject, outerRing, innerCore;
+
+    function createObjects(type, themeKey, wireframe) {
+      while (mainGroup.children.length > 0) {
+        mainGroup.remove(mainGroup.children[0]);
+      }
+
+      const palette = themes[themeKey] || themes.blackmantis;
+      dirLight.color.setHex(palette.primary);
+      pointLight.color.setHex(palette.accent);
+      starMat.color.setHex(palette.primary);
+
+      let geo;
+      switch (type) {
+        case 'torus':
+          geo = new THREE.TorusKnotGeometry(1.4, 0.45, 120, 16);
+          break;
+        case 'icosa':
+          geo = new THREE.IcosahedronGeometry(1.8, 1);
+          break;
+        case 'cube':
+          geo = new THREE.BoxGeometry(2.2, 2.2, 2.2);
+          break;
+        case 'geosphere':
+        default:
+          geo = new THREE.SphereGeometry(1.7, 24, 24);
+          break;
+      }
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: palette.primary,
+        emissive: palette.emissive,
+        roughness: 0.3,
+        metalness: 0.7,
+        wireframe: wireframe
+      });
+
+      meshObject = new THREE.Mesh(geo, mat);
+      mainGroup.add(meshObject);
+
+      // Inner glowing core
+      const coreGeo = new THREE.IcosahedronGeometry(0.7, 2);
+      const coreMat = new THREE.MeshBasicMaterial({
+        color: palette.primary,
+        wireframe: true
+      });
+      innerCore = new THREE.Mesh(coreGeo, coreMat);
+      mainGroup.add(innerCore);
+
+      // Orbiting outer ring
+      const ringGeo = new THREE.TorusGeometry(2.6, 0.04, 16, 100);
+      const ringMat = new THREE.MeshBasicMaterial({ color: palette.accent });
+      outerRing = new THREE.Mesh(ringGeo, ringMat);
+      outerRing.rotation.x = Math.PI / 3;
+      mainGroup.add(outerRing);
+    }
+
+    createObjects('geosphere', 'blackmantis', false);
+
+    // UI event listeners
+    const themeSelect = document.getElementById('themeSelect');
+    const geometrySelect = document.getElementById('geometrySelect');
+    const wireframeToggle = document.getElementById('wireframeToggle');
+    const speedSlider = document.getElementById('speedSlider');
+    const resetViewBtn = document.getElementById('resetViewBtn');
+
+    function refresh() {
+      createObjects(geometrySelect.value, themeSelect.value, wireframeToggle.checked);
+    }
+
+    themeSelect.addEventListener('change', refresh);
+    geometrySelect.addEventListener('change', refresh);
+    wireframeToggle.addEventListener('change', refresh);
+
+    let baseSpeed = 0.01;
+    speedSlider.addEventListener('input', (e) => {
+      baseSpeed = parseFloat(e.target.value) * 0.005;
+    });
+
+    // Orbit controls with pointer
+    let isDragging = false;
+    let prevMouse = { x: 0, y: 0 };
+    let spherical = { radius: 7, phi: Math.PI / 2.5, theta: 0 };
+
+    function updateCamera() {
+      spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.phi));
+      camera.position.x = spherical.radius * Math.sin(spherical.phi) * Math.sin(spherical.theta);
+      camera.position.y = spherical.radius * Math.cos(spherical.phi);
+      camera.position.z = spherical.radius * Math.sin(spherical.phi) * Math.cos(spherical.theta);
+      camera.lookAt(0, 0, 0);
+
+      if (cameraCoordsEl) {
+        cameraCoordsEl.textContent = `X: ${camera.position.x.toFixed(2)}, Y: ${camera.position.y.toFixed(2)}, Z: ${camera.position.z.toFixed(2)}`;
+      }
+    }
+
+    container.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      prevMouse = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - prevMouse.x;
+      const dy = e.clientY - prevMouse.y;
+      spherical.theta -= dx * 0.008;
+      spherical.phi -= dy * 0.008;
+      updateCamera();
+      prevMouse = { x: e.clientX, y: e.clientY };
+    });
+
+    container.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      spherical.radius += e.deltaY * 0.005;
+      spherical.radius = Math.max(3, Math.min(18, spherical.radius));
+      updateCamera();
+    }, { passive: false });
+
+    resetViewBtn.addEventListener('click', () => {
+      spherical = { radius: 7, phi: Math.PI / 2.5, theta: 0 };
+      updateCamera();
+    });
+
+    // Responsive resize
+    window.addEventListener('resize', () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    // Animation Render Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (meshObject) {
+        meshObject.rotation.y += baseSpeed;
+        meshObject.rotation.x += baseSpeed * 0.4;
+      }
+      if (innerCore) {
+        innerCore.rotation.y -= baseSpeed * 1.5;
+      }
+      if (outerRing) {
+        outerRing.rotation.z += baseSpeed * 0.8;
+      }
+      starField.rotation.y += 0.0003;
+
+      renderer.render(scene, camera);
+    }
+
+    updateCamera();
+    animate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Package Shelf • Reusable Code in Web Development</title>
+  <meta name="description" content="An intuitive guide to understanding reusable code packages, package.json, npm, and modern software dependency management.">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .shelf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin: 24px 0;
+    }
+    .shelf-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-top: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 18px 14px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .shelf-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    .shelf-card strong {
+      display: block;
+      color: #fff;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+    .shelf-card span {
+      color: var(--accent-light);
+      font-size: 0.85rem;
+    }
+
+    .pipeline-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .pipeline-step {
+      flex: 1;
+      min-width: 140px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-top: 3px solid #38bdf8;
+      border-radius: 6px;
+      padding: 14px;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      text-align: center;
+    }
+    .pipeline-step strong {
+      display: block;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .distinction-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .distinction-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-top: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .distinction-card .tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent-light);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .distinction-card h3 {
+      margin: 0 0 8px;
+      color: #fff;
+    }
+    .distinction-card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+
+    .interactive-demo {
+      background: #0f1520;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 22px;
+      margin-top: 24px;
+    }
+    .code-pill {
+      display: inline-block;
+      background: #090e17;
+      border: 1px solid #1e293b;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-status-bar">
+    <div class="status-inner">
+      <a href="/" class="status-pill">
+        <svg class="mantis-logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Awayzo Black Mantis Logo">
+          <defs>
+            <linearGradient id="mantisGradShelf" x1="6" y1="2" x2="42" y2="46" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#38bdf8" />
+              <stop offset="0.5" stop-color="#0284c7" />
+              <stop offset="1" stop-color="#090d16" />
+            </linearGradient>
+            <filter id="eyeGlowShelf" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <path d="M22 9 C17 3, 11 2, 7 4 C11 6, 17 9, 20 12" fill="#38bdf8" opacity="0.95" />
+          <path d="M26 9 C31 3, 37 2, 41 4 C37 6, 31 9, 28 12" fill="#38bdf8" opacity="0.95" />
+          <path d="M24 5 L37 34 L32 44 L27 34 L21 34 L16 44 L11 34 Z" fill="url(#mantisGradShelf)" stroke="#38bdf8" stroke-width="1.6" stroke-linejoin="round" />
+          <polygon points="24,14 19,26 29,26" fill="#06090e" stroke="#38bdf8" stroke-width="1.2" />
+          <path d="M15 29 L33 29" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+          <polygon points="11,17 18,22 14,27 8,22" fill="#38bdf8" filter="url(#eyeGlowShelf)" />
+          <polygon points="37,17 30,22 34,27 40,22" fill="#38bdf8" filter="url(#eyeGlowShelf)" />
+          <path d="M16 44 L20 38" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+          <path d="M32 44 L28 38" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span class="brand-title">AWAYZO <span class="brand-divider">||</span> BLACK MANTIS</span>
+      </a>
+      <div class="status-links">
+        <a href="/">← Return to Field Guide</a>
+        <a href="/3d.html">3D Graphics Lab ↗</a>
+        <a href="/team">Team Awayzo ★</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <header class="fieldguide-header">
+      <div class="guide-badge">AWAYZO || BLACK MANTIS · THE WORKSHOP ANALOGY</div>
+      <h1>The Package Shelf</h1>
+      <p class="intro">
+        How developers import and manage reusable code. When building a web app, you design the unique experience, structure, and style. For specialized functions—like date calculations, physics engines, or 3D viewports—you bring pre-built, tested components onto your shelf.
+      </p>
+    </header>
+
+    <!-- The Analogy Cards -->
+    <section class="hero-guide">
+      <div class="hero-content">
+        <span class="guide-badge" style="background: rgba(56, 189, 248, 0.15);">MAPPING THE ANALOGY</span>
+        <h2>A workshop and its precision tools</h2>
+        <p>
+          Imagine building custom furniture. You design the table, sand the wood, and craft the joints. But you don't smelt your own steel screws or invent your own drill—you buy standard hardware from a catalog.
+        </p>
+
+        <div class="shelf-grid">
+          <div class="shelf-card">
+            <strong>Your App</strong>
+            <span>The Workshop</span>
+          </div>
+          <div class="shelf-card">
+            <strong>package.json</strong>
+            <span>The Parts List</span>
+          </div>
+          <div class="shelf-card">
+            <strong>npm Registry</strong>
+            <span>The Parts Catalog</span>
+          </div>
+          <div class="shelf-card">
+            <strong>npm CLI</strong>
+            <span>The Delivery Truck</span>
+          </div>
+          <div class="shelf-card">
+            <strong>package-lock.json</strong>
+            <span>The Exact Invoice</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What the files mean -->
+    <section class="stops">
+      <article class="stop">
+        <div class="stop-header">
+          <span class="number">ESSENTIAL CONCEPT</span>
+          <span class="stop-category">The File System</span>
+        </div>
+        <h2>Looking Inside the Workshop</h2>
+        <p>
+          When you inspect a modern JavaScript or TypeScript project, these key files work together to manage external code cleanly:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 16px;">
+          <div class="question-callout" style="border-left-color: #38bdf8;">
+            <strong style="color: #fff;">01 · package.json is the parts list</strong>
+            <p style="color: #cbd5e1; margin-top: 4px;">
+              It names your project and lists the external packages it depends on. Because it is a small, lightweight text file, it easily lives in version control (Git).
+            </p>
+          </div>
+
+          <div class="question-callout" style="border-left-color: #10b981;">
+            <strong style="color: #fff;">02 · npm fetches the tools</strong>
+            <p style="color: #cbd5e1; margin-top: 4px;">
+              Running <code>npm install</code> reads your <code>package.json</code>, contacts the online registry, and downloads local copies into your local workspace.
+            </p>
+          </div>
+
+          <div class="question-callout" style="border-left-color: #f59e0b;">
+            <strong style="color: #fff;">03 · node_modules stays off GitHub</strong>
+            <p style="color: #cbd5e1; margin-top: 4px;">
+              The downloaded code is stored in a folder called <span class="code-pill">node_modules</span>. It can contain thousands of files and megabytes of code. We put <code>node_modules</code> in our <code>.gitignore</code> file so our Git repository remains clean and fast. Anyone who clones the project can recreate the folder in seconds by typing <code>npm install</code>.
+            </p>
+          </div>
+
+          <div class="question-callout" style="border-left-color: #a855f7;">
+            <strong style="color: #fff;">04 · Your code imports what it needs</strong>
+            <p style="color: #cbd5e1; margin-top: 4px;">
+              Once installed, your JavaScript files can import specific functions using <code>import</code> or <code>require</code> statements, giving you instant superpowers without writing thousands of lines of boilerplate.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Three words compared -->
+      <article class="stop">
+        <div class="stop-header">
+          <span class="number">TERMINOLOGY</span>
+          <span class="stop-category">Definitions</span>
+        </div>
+        <h2>Template vs. Library vs. Package</h2>
+        <p>
+          Newcomers often hear these three terms interchangeably. Here is how professional software engineers distinguish them:
+        </p>
+
+        <div class="distinction-grid">
+          <div class="distinction-card">
+            <span class="tag">Starter Foundation</span>
+            <h3>Template</h3>
+            <p>
+              A pre-arranged starting structure that you copy and customize. It gives you boilerplate folders, build settings, and layout, but becomes your own code once you edit it.
+            </p>
+          </div>
+
+          <div class="distinction-card">
+            <span class="tag">Specific Capability</span>
+            <h3>Library</h3>
+            <p>
+              A focused collection of helper functions and classes (for example, Three.js for 3D graphics or Lodash for data utilities) that you call when you need them.
+            </p>
+          </div>
+
+          <div class="distinction-card">
+            <span class="tag">Distributable Bundle</span>
+            <h3>Package</h3>
+            <p>
+              A standardized unit of software published to a registry with a name, version number, and manifest (<code>package.json</code>) so other developers can easily install it.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Interactive demonstration of a real package -->
+      <article class="stop">
+        <div class="stop-header">
+          <span class="number">LIVE DEMONSTRATION</span>
+          <span class="stop-category">Borrowed Package in Action</span>
+        </div>
+        <h2>Testing a Package: The dayjs Date Formatter</h2>
+        <p>
+          Instead of writing complex regex and timezone calculations by hand, our backend imports the lightweight open-source package <code>dayjs</code>. Click below to request a live timestamp formatted by this package:
+        </p>
+
+        <div class="interactive-demo">
+          <button id="fetchDateBtn" type="button" class="btn">Test Package API Call</button>
+          
+          <div id="dayjsResult" style="margin-top: 16px; display: none; background: #080c13; padding: 16px; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.8rem; color: var(--accent); font-weight: 700; margin-bottom: 6px;">RESPONSE FROM SERVER:</div>
+            <div id="dayjsMsg" style="font-size: 1.1rem; color: #fff; font-weight: 600;"></div>
+            <div id="dayjsDetail" style="font-size: 0.85rem; color: #94a3b8; margin-top: 8px; font-family: var(--font-mono);"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- The Release Pipeline -->
+      <article class="stop">
+        <div class="stop-header">
+          <span class="number">INFRASTRUCTURE</span>
+          <span class="stop-category">The Supply Chain</span>
+        </div>
+        <h2>How Reusable Code is Maintained</h2>
+        <p>
+          When an open-source author creates a useful library, this is how it safely reaches thousands of applications around the world:
+        </p>
+
+        <div class="pipeline-flow">
+          <div class="pipeline-step">
+            <strong>1. Author Repo</strong>
+            <span>Writes &amp; tests code</span>
+          </div>
+          <div class="pipeline-step">
+            <strong>2. Automated Tests</strong>
+            <span>Runs CI verification</span>
+          </div>
+          <div class="pipeline-step">
+            <strong>3. Semantic Version</strong>
+            <span>Assigns new release tag</span>
+          </div>
+          <div class="pipeline-step">
+            <strong>4. Package Registry</strong>
+            <span>Published to npm registry</span>
+          </div>
+          <div class="pipeline-step">
+            <strong>5. Your Project</strong>
+            <span>Installed to node_modules</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="fieldguide-footer">
+      <div class="footer-top">
+        <strong>Awayzo || Black Mantis • The Technology Field Guide</strong>
+        <p>A practical reference for newcomers learning modern web engineering.</p>
+      </div>
+      <div class="footer-bottom">
+        <span>Crafted by Awayzo || Black Mantis</span>
+        <a href="/" style="color: var(--accent); text-decoration: none;">← Back to Main Field Guide</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const btn = document.getElementById('fetchDateBtn');
+    const resultBox = document.getElementById('dayjsResult');
+    const msgEl = document.getElementById('dayjsMsg');
+    const detailEl = document.getElementById('dayjsDetail');
+
+    btn.addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/dayjs-demo');
+        const data = await res.json();
+        resultBox.style.display = 'block';
+        msgEl.textContent = data.message;
+        detailEl.textContent = `Formatted date: ${data.formattedDate} | Library: ${data.library} (${data.packageExplanation})`;
+      } catch (err) {
+        resultBox.style.display = 'block';
+        const now = new Date();
+        msgEl.textContent = `Timestamp: ${now.toISOString().replace('T', ' ').slice(0, 19)}`;
+        detailEl.textContent = `Formatted via client fallback.`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3,176 +3,478 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Week 5 | CS110 Newcomer's Guide</title>
-
+  <title>The Technology Field Guide • From Idea to Interactive Web</title>
+  <meta name="description" content="An interactive field guide to modern web development: mindset, interface design, code architecture, package dependencies, and network delivery.">
+  <meta property="og:title" content="The Technology Field Guide • From Idea to Interactive Web">
+  <meta property="og:description" content="A practical newcomer's handbook on how web applications are conceived, structured, programmed, and delivered to the world.">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
+  <!-- Top Navigation -->
+  <nav class="top-status-bar" aria-label="Main Navigation">
+    <div class="status-inner">
+      <div class="status-pill">
+        <svg class="mantis-logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Awayzo Black Mantis Logo">
+          <defs>
+            <linearGradient id="mantisGradNav" x1="6" y1="2" x2="42" y2="46" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#38bdf8" />
+              <stop offset="0.5" stop-color="#0284c7" />
+              <stop offset="1" stop-color="#090d16" />
+            </linearGradient>
+            <filter id="eyeGlowNav" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <!-- Swept Mantis Antennae forming upper peak of the 'A' -->
+          <path d="M22 9 C17 3, 11 2, 7 4 C11 6, 17 9, 20 12" fill="#38bdf8" opacity="0.95" />
+          <path d="M26 9 C31 3, 37 2, 41 4 C37 6, 31 9, 28 12" fill="#38bdf8" opacity="0.95" />
+          <!-- Main 'A' Mantis Head Silhouette -->
+          <path d="M24 5 L37 34 L32 44 L27 34 L21 34 L16 44 L11 34 Z" fill="url(#mantisGradNav)" stroke="#38bdf8" stroke-width="1.6" stroke-linejoin="round" />
+          <!-- Inner Triangular Forehead / Center Aperture of 'A' -->
+          <polygon points="24,14 19,26 29,26" fill="#06090e" stroke="#38bdf8" stroke-width="1.2" />
+          <!-- The Crossbar of the 'A' / Mandible Visor Bridge -->
+          <path d="M15 29 L33 29" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+          <!-- Left Compound Eye (Glowing Mantis Eye) -->
+          <polygon points="11,17 18,22 14,27 8,22" fill="#38bdf8" filter="url(#eyeGlowNav)" />
+          <!-- Right Compound Eye (Glowing Mantis Eye) -->
+          <polygon points="37,17 30,22 34,27 40,22" fill="#38bdf8" filter="url(#eyeGlowNav)" />
+          <!-- Bottom Sharp Mandibles forming the Serifs of the 'A' -->
+          <path d="M16 44 L20 38" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+          <path d="M32 44 L28 38" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span class="brand-title">AWAYZO <span class="brand-divider">||</span> BLACK MANTIS</span>
+      </div>
+      <div class="status-links">
+        <a href="#stop-01">01. Mindset</a>
+        <a href="#stop-02">02. Story to Screen</a>
+        <a href="#stop-03">03. Tools &amp; Code</a>
+        <a href="#stop-04">04. Network</a>
+        <a href="#interactive-lab" class="nav-highlight">Interactive Lab ⚙</a>
+        <a href="/package-shelf">The Package Shelf ↗</a>
+        <a href="/3d.html">3D WebGL Lab ↗</a>
+        <a href="/team" class="nav-highlight">Team Roster ★</a>
+      </div>
+    </div>
+  </nav>
+
   <main>
-
-    <a href="../index.html">← Return to my website</a>
-
-    <header>
-      <p class="week-label">CS110 • WEEK 05</p>
-
-      <h1>My CS110 Newcomer's Guide</h1>
-
+    <!-- Field Guide Header -->
+    <header class="fieldguide-header">
+      <div class="guide-badge">AWAYZO || BLACK MANTIS · WEB TECHNOLOGY FIELD GUIDE</div>
+      <h1>From an idea to something people can use.</h1>
       <p class="intro">
-        This guide explains what I have learned so far and how an idea
-        can turn into something people can actually use.
+        Computer science is much more than memorizing syntax. It is the art of asking thoughtful questions, visualizing systems, understanding human needs, and using modern tools to transform raw ideas into living, interactive web experiences.
       </p>
+
+      <!-- Team Emblem Signature Card -->
+      <div class="team-emblem-card">
+        <svg class="mantis-logo-large" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Awayzo Black Mantis Crest">
+          <defs>
+            <linearGradient id="mantisGradHero" x1="6" y1="2" x2="42" y2="46" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#7dd3fc" />
+              <stop offset="0.4" stop-color="#38bdf8" />
+              <stop offset="0.8" stop-color="#0369a1" />
+              <stop offset="1" stop-color="#070a0f" />
+            </linearGradient>
+            <filter id="eyeGlowHero" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="2" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <path d="M22 9 C17 3, 11 2, 7 4 C11 6, 17 9, 20 12" fill="#38bdf8" opacity="0.95" />
+          <path d="M26 9 C31 3, 37 2, 41 4 C37 6, 31 9, 28 12" fill="#38bdf8" opacity="0.95" />
+          <path d="M24 5 L37 34 L32 44 L27 34 L21 34 L16 44 L11 34 Z" fill="url(#mantisGradHero)" stroke="#38bdf8" stroke-width="1.8" stroke-linejoin="round" />
+          <polygon points="24,14 19,26 29,26" fill="#06090e" stroke="#38bdf8" stroke-width="1.4" />
+          <path d="M15 29 L33 29" stroke="#38bdf8" stroke-width="2.8" stroke-linecap="round" />
+          <polygon points="11,17 18,22 14,27 8,22" fill="#38bdf8" filter="url(#eyeGlowHero)" />
+          <polygon points="37,17 30,22 34,27 40,22" fill="#38bdf8" filter="url(#eyeGlowHero)" />
+          <path d="M16 44 L20 38" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" />
+          <path d="M32 44 L28 38" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
+        <div class="team-emblem-info">
+          <strong>AWAYZO <span class="brand-divider">||</span> BLACK MANTIS</strong>
+          <span>ENGINEERING &amp; DESIGN COLLECTIVE</span>
+        </div>
+      </div>
+
+      <!-- Quick Chapter Jumper -->
+      <div class="field-quicknav">
+        <a href="#stop-01" class="quicknav-chip">Chapter 01 · Mindset &amp; Learning</a>
+        <a href="#stop-02" class="quicknav-chip">Chapter 02 · Story to Screen</a>
+        <a href="#stop-03" class="quicknav-chip">Chapter 03 · Tools, Code &amp; Packages</a>
+        <a href="#stop-04" class="quicknav-chip">Chapter 04 · Network &amp; Delivery</a>
+        <a href="#interactive-lab" class="quicknav-chip highlight-chip">Interactive Lab ⚙</a>
+        <a href="/3d.html" class="quicknav-chip">3D WebGL Viewport ↗</a>
+        <a href="/package-shelf" class="quicknav-chip">Package Shelf Analogy ↗</a>
+        <a href="/team" class="quicknav-chip highlight-chip">Team Awayzo || Black Mantis ★</a>
+      </div>
     </header>
 
-    <section class="hero">
-      <h2>From an idea to something people can use</h2>
+    <!-- Welcome Hero & Overview -->
+    <section class="hero-guide">
+      <div class="hero-content">
+        <h2>How modern web software actually comes together</h2>
+        <p>
+          Whether you are building your very first website or architecting a complex web application, every digital experience follows a four-stage journey: establishing the mental model, structuring the interface, writing the behavioral code, and transmitting the software across global networks.
+        </p>
+        <div class="hero-actions">
+          <a href="#stop-01" class="btn">Start Reading the Guide ↓</a>
+          <a href="#interactive-lab" class="btn btn-secondary">Open Interactive Lab ⚙</a>
+          <a href="/3d.html" class="btn btn-secondary">Launch 3D WebGL Lab ↗</a>
+        </div>
+      </div>
+    </section>
 
+    <!-- THE FOUR CORE STOPS / CHAPTERS -->
+    <section class="stops" id="fieldguide-stops">
+
+      <!-- CHAPTER 01: MINDSET -->
+      <article class="stop" id="stop-01">
+        <div class="stop-header">
+          <span class="number">CHAPTER 01</span>
+          <span class="stop-category">Mental Models &amp; Problem Solving</span>
+        </div>
+        <h2>Mindset: How Developers Learn &amp; Build</h2>
+        <h3>Embracing curiosity, iterative failure, and problem isolation</h3>
+        <p>
+          The biggest secret in computer science is that nobody writes perfect code on the first attempt. Curiosity, questions, personality, and collaboration all shape how we grow. Learning to code is really learning how to break large, intimidating problems into small, conquerable steps.
+        </p>
+
+        <div class="concept-breakdown">
+          <div class="concept-card">
+            <span class="concept-tag">CORE PRINCIPLE 01</span>
+            <strong>Ask Questions Early</strong>
+            <p>Stuck on an elusive bug? Explaining the issue to a teammate or writing it down often reveals the hidden assumption that was failing.</p>
+          </div>
+          <div class="concept-card">
+            <span class="concept-tag">CORE PRINCIPLE 02</span>
+            <strong>Isolate Your Layers</strong>
+            <p>When something breaks, don't guess blindly. Test the HTML structure first, then check the CSS rules, and finally inspect the JavaScript console.</p>
+          </div>
+          <div class="concept-card">
+            <span class="concept-tag">CORE PRINCIPLE 03</span>
+            <strong>Sketch Before Typing</strong>
+            <p>Mapping user journeys and UI components on a whiteboard clarifies your goals and prevents hours of frustrating code rewrites.</p>
+          </div>
+        </div>
+
+        <div class="question-callout">
+          <div class="callout-badge">DEVELOPER INSIGHT</div>
+          <strong>What can you do when your first approach doesn't work?</strong>
+          <p>
+            Step away from the keyboard! Sketch the flow with simple boxes and arrows, inspect the browser's developer console for warnings, and test one tiny hypothesis at a time. Every bug is simply an unanswered question waiting for clarity.
+          </p>
+        </div>
+      </article>
+
+      <!-- CHAPTER 02: STORY TO SCREEN -->
+      <article class="stop" id="stop-02">
+        <div class="stop-header">
+          <span class="number">CHAPTER 02</span>
+          <span class="stop-category">Interface Design &amp; Architecture</span>
+        </div>
+        <h2>Story to Screen: From Concept to User Interface</h2>
+        <h3>Audience, purposeful genre, and wearing the Three Design Hats</h3>
+        <p>
+          Before writing any code, a developer must understand who will use the application (the audience), what problem it solves (the purpose), and what atmosphere it communicates (the genre). To design cleanly, we wear three distinct "hats" during the planning phase:
+        </p>
+
+        <div class="hats-grid">
+          <div class="hat-card visual-hat">
+            <div class="hat-icon">🎨</div>
+            <h4>Visual Hat</h4>
+            <span class="hat-sub">How should it look &amp; feel?</span>
+            <p>Color theory, typographic hierarchy, responsive grid spacing, accessibility contrast ratios, and cohesive aesthetic tone.</p>
+          </div>
+          <div class="hat-card logical-hat">
+            <div class="hat-icon">⚡</div>
+            <h4>Logical Hat</h4>
+            <span class="hat-sub">How should it behave?</span>
+            <p>Event listeners, user clicks, form submissions, state changes, feedback animations, and DOM updates.</p>
+          </div>
+          <div class="hat-card data-hat">
+            <div class="hat-icon">📊</div>
+            <h4>Data Hat</h4>
+            <span class="hat-sub">What information does it handle?</span>
+            <p>Input fields, state objects, API payloads, vector coordinates, and schema structures.</p>
+          </div>
+        </div>
+
+        <!-- The Universal User Flow -->
+        <div class="flow-pill-banner">
+          <span class="flow-label">The Natural User Flow:</span>
+          <span class="flow-item">Newcomer Lands</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-item">Clear Visual Orientation</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-item">First Meaningful Action</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-item">Visible Page Result</span>
+        </div>
+      </article>
+
+      <!-- CHAPTER 03: TOOLS & CODE -->
+      <article class="stop" id="stop-03">
+        <div class="stop-header">
+          <span class="number">CHAPTER 03</span>
+          <span class="stop-category">The Web Engine &amp; Dependencies</span>
+        </div>
+        <h2>Tools &amp; Code: How Web Applications Function</h2>
+        <h3>The triad of web technologies and reusable open-source packages</h3>
+        <p>
+          The web platform is powered by three complementary languages, supported by version control systems and modular code package registries:
+        </p>
+
+        <div class="tech-stack-grid">
+          <div class="tech-item">
+            <span class="tech-badge badge-html">HTML5</span>
+            <strong>Structure &amp; Semantics</strong>
+            <p>The skeleton of the page. Defines headings, navigation landmarks, articles, buttons, and accessibility tags for screen readers.</p>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge badge-css">CSS3</span>
+            <strong>Presentation &amp; Layout</strong>
+            <p>The skin and visual styling. Controls responsive grid layouts, color palettes, spacing, typography, and fluid mobile adaptivity.</p>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge badge-js">JavaScript</span>
+            <strong>Behavior &amp; State</strong>
+            <p>The brain. Listens for user interactions, calculates values, fetches server data asynchronously, and dynamically mutates the DOM.</p>
+          </div>
+          <div class="tech-item">
+            <span class="tech-badge badge-git">Git &amp; GitHub</span>
+            <strong>Version History &amp; Collaboration</strong>
+            <p>The safety net. Tracks every code change over time, supports branch experimentation, and facilitates peer code reviews.</p>
+          </div>
+        </div>
+
+        <!-- Package Shelf Analogy Feature -->
+        <div class="analogy-banner">
+          <div class="analogy-text">
+            <span class="analogy-tag">CORE ANALOGY · REUSABLE CODE</span>
+            <h4>The Package Shelf: Why developers don't reinvent the wheel</h4>
+            <p>
+              Imagine building a wooden desk. You design the structure, cut the lumber, and sand the surface. But you don't smelt your own metal screws or forge your own hinges—you buy standardized, precision-crafted parts from a hardware store.
+            </p>
+            <p style="margin-top: 8px;">
+              In software, your app is the workshop. <code>package.json</code> is the parts list, <code>npm</code> is the delivery service, and external packages (like date utilities or 3D engines) are the specialized tools on your shelf.
+            </p>
+          </div>
+          <div class="analogy-action">
+            <a href="/package-shelf" class="btn">Explore the Package Shelf Guide ↗</a>
+            <a href="/3d.html" class="btn btn-secondary">Explore 3D WebGL Viewport ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- CHAPTER 04: NETWORK & PEOPLE -->
+      <article class="stop" id="stop-04">
+        <div class="stop-header">
+          <span class="number">CHAPTER 04</span>
+          <span class="stop-category">Infrastructure &amp; Distribution</span>
+        </div>
+        <h2>Network &amp; People: How Code Reaches the World</h2>
+        <h3>The journey of a web request from keystroke to rendered pixels</h3>
+        <p>
+          When someone types a website address into a browser, an intricate chain of global networking events occurs in a fraction of a second:
+        </p>
+
+        <div class="network-diagram">
+          <div class="network-step">
+            <div class="network-icon">💻</div>
+            <strong>1. Browser Request</strong>
+            <span>User inputs URL &amp; hits Enter</span>
+          </div>
+          <div class="network-arrow">→</div>
+          <div class="network-step">
+            <div class="network-icon">🌐</div>
+            <strong>2. DNS Resolver</strong>
+            <span>Translates domain to Server IP</span>
+          </div>
+          <div class="network-arrow">→</div>
+          <div class="network-step">
+            <div class="network-icon">🖥️</div>
+            <strong>3. Web Server</strong>
+            <span>Delivers HTML, CSS &amp; JavaScript</span>
+          </div>
+          <div class="network-arrow">→</div>
+          <div class="network-step">
+            <div class="network-icon">⚡</div>
+            <strong>4. Browser Engine</strong>
+            <span>Parses DOM &amp; renders pixels</span>
+          </div>
+        </div>
+
+        <p style="margin-top: 20px; color: #cbd5e1; font-size: 0.98rem; line-height: 1.65;">
+          Just as vital as the computer network is the <strong>human network</strong>. Great software is built through open collaboration: sharing questions in developer communities, conducting thoughtful peer reviews on GitHub pull requests, and learning from other developers' solutions.
+        </p>
+      </article>
+    </section>
+
+    <!-- INTERACTIVE FIELD GUIDE LAB (WORKBENCH) -->
+    <section class="workbench-section" id="interactive-lab">
+      <div class="workbench-header">
+        <div class="guide-badge">HANDS-ON LABORATORY</div>
+        <h2>Interactive Web Workbench</h2>
+        <p>
+          Experience web development fundamentals in real-time. Test how user actions trigger JavaScript events to compute results and visibly update the live page.
+        </p>
+      </div>
+
+      <div class="workbench-card">
+        <!-- Tool Selector Bar -->
+        <div class="workbench-controls">
+          <div class="control-group">
+            <label for="fieldToolSelect">Choose Interactive Experiment:</label>
+            <select id="fieldToolSelect">
+              <option value="dom">01 · DOM Event Dispatcher &amp; State Mutator</option>
+              <option value="dns">02 · DNS Resolution &amp; Network Packet Tracer</option>
+              <option value="contrast">03 · Accessibility &amp; WCAG Contrast Analyzer</option>
+              <option value="package">04 · Reusable Package API Tester (Live dayjs)</option>
+            </select>
+          </div>
+
+          <div class="control-group" id="toolParamContainer">
+            <label id="toolParamLabel" for="toolParamInput">Parameter / Input Value:</label>
+            <input type="text" id="toolParamInput" value="Awayzo || Black Mantis">
+          </div>
+
+          <div class="btn-row">
+            <button id="runToolBtn" type="button" class="btn">Trigger Event</button>
+            <button id="resetToolBtn" type="button" class="btn btn-secondary">Reset</button>
+          </div>
+        </div>
+
+        <!-- Live Visual Playground Area -->
+        <div class="live-sandbox-container" id="liveSandbox">
+          <div class="sandbox-title">LIVE RENDER TARGET:</div>
+          <div class="sandbox-target" id="sandboxTarget">
+            <span class="target-badge" id="targetBadge">Interactive DOM Element</span>
+            <h4 id="targetTitle">Ready for your interaction</h4>
+            <p id="targetBody">Click "Trigger Event" above to see JavaScript modify this element's styles, text, and attributes.</p>
+          </div>
+        </div>
+
+        <!-- Diagnostic Output & Event Trace -->
+        <div class="workbench-display" id="workbenchDisplay">
+          <div class="display-top">
+            <span class="display-status" id="displayStatusText">● WORKBENCH READY</span>
+            <span class="display-time" id="displayTimestamp">--:--:--</span>
+          </div>
+          <div class="display-main" id="displayResultMsg">
+            Select an experiment and click <strong>"Trigger Event"</strong> to trace: <span style="color: var(--accent);">User Action → JavaScript Handler → Visible Page Result</span>.
+          </div>
+          <div class="display-trace" id="displayTraceLog">
+            Event trace: Awaiting user action...
+          </div>
+        </div>
+
+        <!-- Telemetry Widget Metrics -->
+        <div class="metric-widget-row">
+          <div class="metric-box">
+            <span class="metric-label">Execution Latency</span>
+            <strong id="metricExecTime">0 ms</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Target DOM Node</span>
+            <strong id="metricDomNode">#sandboxTarget</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">System State</span>
+            <strong id="metricStateStatus" style="color: var(--accent);">IDLE</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REAL PLANNING & ARCHITECTURE SHOWCASE -->
+    <section class="evidence-section" id="architecture-planning">
+      <div class="guide-badge">ARCHITECTURAL CASE STUDY</div>
+      <h2>From Whiteboard to Working Code</h2>
       <p>
-        Computer science is not only about writing code. It is also about
-        asking questions, being creative, understanding people, and using
-        tools to turn ideas into working experiences.
+        How developers plan interfaces before writing code. Below are authentic architectural whiteboard sessions and wireframe mappings showing the progression from problem definition to visual layout and version-controlled codebase:
       </p>
 
-      <button id="start-button" type="button">
-        Start the Guide
-      </button>
-    </section>
-
-    <section class="stops">
-
-      <article class="stop">
-        <span class="number">01</span>
-
-        <h2>Mindset</h2>
-
-        <h3>How we learn</h3>
-
-        <p>
-          I learned that questions, creativity, personality, and support
-          all affect how I learn. One important part of learning computer
-          science is being willing to try something, make mistakes, and
-          change my approach when something does not work.
-        </p>
-
-        <div class="question">
-          <strong>Newcomer question:</strong>
-          What can I change if my first approach does not work?
-        </div>
-      </article>
-
-
-      <article class="stop">
-        <span class="number">02</span>
-
-        <h2>Story to Screen</h2>
-
-        <h3>How an idea becomes a UI</h3>
-
-        <p>
-          Before creating a website or application, I need to think about
-          the audience, the user's need, and the type of experience I want
-          to create.
-        </p>
-
-        <div class="hats">
-          <div>
-            <strong>Visual</strong>
-            <p>How should it look?</p>
+      <div class="evidence-gallery">
+        <div class="evidence-item">
+          <div class="img-wrap">
+            <img src="/5a/LexxieAyala/IMG_7600.jpg" alt="Whiteboard User Journey Diagram" loading="lazy">
           </div>
-
-          <div>
-            <strong>Logical</strong>
-            <p>How should it work?</p>
-          </div>
-
-          <div>
-            <strong>Data</strong>
-            <p>What information does it need?</p>
+          <div class="evidence-info">
+            <strong>System Flow &amp; User Journey</strong>
+            <span>Mapping the newcomer experience and step-by-step layout on the whiteboard</span>
           </div>
         </div>
-      </article>
 
-
-      <article class="stop">
-        <span class="number">03</span>
-
-        <h2>Tools + Code</h2>
-
-        <h3>How the app works</h3>
-
-        <p>
-          HTML creates the structure, CSS controls the appearance, and
-          JavaScript adds behavior. VS Code is where I can work on the
-          project, while Git and GitHub help me save and share changes.
-        </p>
-
-        <div class="tools">
-          <span>HTML</span>
-          <span>CSS</span>
-          <span>JavaScript</span>
-          <span>VS Code</span>
-          <span>Git</span>
-          <span>GitHub</span>
-          <span>3D</span>
+        <div class="evidence-item">
+          <div class="img-wrap">
+            <img src="/5a/PaulinaRamirez/Whiteboard work 4a.png" alt="UI Architecture and Wireframing" loading="lazy">
+          </div>
+          <div class="evidence-info">
+            <strong>Interface Wireframing</strong>
+            <span>Structuring semantic containers, responsive columns, and visual hierarchy</span>
+          </div>
         </div>
-      </article>
 
-
-      <article class="stop">
-        <span class="number">04</span>
-
-        <h2>Network + People</h2>
-
-        <h3>How it reaches others</h3>
-
-        <p>
-          A website has to travel through a network before someone can
-          use it. A browser connects through a name server to find the
-          site server. GitHub and Discord can also help people work
-          together.
-        </p>
-
-        <div class="route">
-          <span>Browser</span>
-          <span>→</span>
-          <span>Name Server</span>
-          <span>→</span>
-          <span>Site Server</span>
+        <div class="evidence-item">
+          <div class="img-wrap">
+            <img src="/5a/PaulinaRamirez/Websiteimage.png" alt="First Interactive Layout Preview" loading="lazy">
+          </div>
+          <div class="evidence-info">
+            <strong>Early Layout Prototype</strong>
+            <span>Translating whiteboard wireframes into responsive HTML and CSS cards</span>
+          </div>
         </div>
-      </article>
 
+        <div class="evidence-item">
+          <div class="img-wrap">
+            <img src="/5a/NathanLopez/Screenshot 2026-09-22 144539.png" alt="VS Code Environment and Server" loading="lazy">
+          </div>
+          <div class="evidence-info">
+            <strong>Developer Environment Setup</strong>
+            <span>VS Code workspace, local preview server, and terminal verification</span>
+          </div>
+        </div>
+
+        <div class="evidence-item">
+          <div class="img-wrap">
+            <img src="/5a/NicolasUribe/Screenshot 2026-09-22 144343.png" alt="Browser Rendering and Console Verification" loading="lazy">
+          </div>
+          <div class="evidence-info">
+            <strong>Browser DevTools Inspection</strong>
+            <span>Testing responsiveness, keyboard tab order, and clean console logs</span>
+          </div>
+        </div>
+
+        <div class="evidence-item">
+          <div class="img-wrap">
+            <img src="/5a/RudySierra/Screenshot 2026-09-22 150251.png" alt="Git Version History Checkpoint" loading="lazy">
+          </div>
+          <div class="evidence-info">
+            <strong>Git Commit &amp; Sync</strong>
+            <span>Preserving clean commit history and pushing changes for peer review</span>
+          </div>
+        </div>
+      </div>
     </section>
 
-
-    <section class="reflection">
-
-      <h2>My Week 5 Reflection</h2>
-
-      <p>
-        One thing I have learned is that computer science involves more
-        than just coding. I have to think about the person using what I
-        create, how the idea should look and work, and how other people
-        can access it. I also learned that asking questions and changing
-        my approach can help me learn better.
-      </p>
-
-      <button id="question-button" type="button">
-        Show My Peer Question
-      </button>
-
-      <p id="peer-question" hidden>
-        What part of my guide was easiest to understand, and what part
-        should I explain better?
-      </p>
-
-    </section>
-
-
-    <footer>
-      <p>CS110 • Week 5 • Reflection + Build</p>
+    <!-- Footer -->
+    <footer class="fieldguide-footer">
+      <div class="footer-top">
+        <strong>Awayzo || Black Mantis • The Technology Field Guide</strong>
+        <p>An interactive open reference for newcomers learning modern web engineering.</p>
+      </div>
+      <div class="footer-bottom">
+        <span>Crafted by Awayzo || Black Mantis with Semantic HTML5, Responsive CSS3, JavaScript &amp; WebGL</span>
+        <div style="display: flex; gap: 16px;">
+          <a href="/team" style="color: var(--accent); text-decoration: none; font-weight: 700;">Meet the Team (5) ★</a>
+          <a href="/package-shelf" style="color: var(--accent); text-decoration: none;">Package Shelf Analogy ↗</a>
+          <a href="/3d.html" style="color: var(--accent); text-decoration: none;">3D WebGL Viewport ↗</a>
+        </div>
+      </div>
     </footer>
-
   </main>
 
   <script src="js/app.js"></script>
