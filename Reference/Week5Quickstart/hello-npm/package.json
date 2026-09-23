@@ -1,0 +1,12 @@
+{
+  "name": "cs110-hello-npm-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "hello": "node hello.mjs"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13"
+  }
+}
